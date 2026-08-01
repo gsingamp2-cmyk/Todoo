@@ -324,3 +324,309 @@ h1 {
   color: white;
   border: 2px solid #4033d8;
 }
+
+
+.module-nav {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.module-nav button {
+  flex: 1;
+  padding: 9px;
+  border: 1px solid #5b4df5;
+  background: white;
+  color: #5b4df5;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.module-nav .active-module {
+  background: #5b4df5;
+  color: white;
+}
+
+
+/* =========================
+   STREAK MODULE
+========================= */
+
+.streak-page {
+  width: 100%;
+}
+
+.streak-page h2 {
+  text-align: center;
+  margin: 5px 0 18px;
+  font-size: 22px;
+}
+
+/* Streak creation form */
+.streak-form {
+  display: grid;
+  grid-template-columns: 1fr 140px 80px;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.streak-form input {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 7px;
+  outline: none;
+  font-size: 14px;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.streak-form input:focus {
+  border-color: #5b4df5;
+}
+
+/* Task input takes more space */
+.streak-form input[type="text"] {
+  grid-column: 1 / -1;
+}
+
+/* Create button */
+.streak-form button {
+  grid-column: 1 / -1;
+
+  padding: 10px;
+  border: none;
+  border-radius: 7px;
+
+  background: #5b4df5;
+  color: white;
+
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.streak-form button:hover {
+  opacity: 0.9;
+}
+
+/* Mobile */
+@media (max-width: 500px) {
+  .streak-form {
+    grid-template-columns: 1fr;
+  }
+
+  .streak-form input[type="text"],
+  .streak-form button {
+    grid-column: auto;
+  }
+}
+
+
+.streak-list {
+  margin-top: 15px;
+}
+
+.no-streaks {
+  text-align: center;
+  color: #888;
+  font-size: 13px;
+}
+
+.streak-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 12px;
+  margin-bottom: 10px;
+
+  background: #f8f8ff;
+  border: 1px solid #e5e3ff;
+  border-radius: 8px;
+}
+
+.streak-card strong {
+  font-size: 14px;
+}
+
+.streak-card span {
+  color: #5b4df5;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+.streak-todo {
+  border-left: 3px solid #5b4df5;
+}
+
+.streak-todo-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.streak-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: #5b4df5;
+  background: #eeecff;
+  padding: 3px 7px;
+  border-radius: 10px;
+}
+
+
+/* =========================
+   STREAK CALENDAR
+========================= */
+
+.streak-calendar {
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8f8ff;
+  border-radius: 12px;
+}
+
+.streak-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.streak-calendar-header h3 {
+  margin: 0;
+}
+
+.streak-calendar-header button {
+  border: none;
+  background: #5b4df5;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.streak-calendar-weekdays,
+.streak-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.streak-calendar-weekdays {
+  text-align: center;
+  margin-bottom: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+}
+
+.streak-calendar-day {
+  min-height: 48px;
+  padding: 5px;
+
+  background: white;
+  border-radius: 7px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.streak-day-number {
+  font-size: 12px;
+}
+
+.streak-fraction {
+  margin-top: 3px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #5b4df5;
+}
+
+.streak-perfect {
+  background: #5b4df5;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 8px;
+}
+
+
+
+/* ===== Streak Cards ===== */
+
+.streak-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 14px;
+  margin-bottom: 10px;
+
+  background: #f8f8ff;
+  border: 1px solid #e5e3ff;
+  border-radius: 9px;
+}
+
+.streak-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.streak-card-info strong {
+  font-size: 14px;
+}
+
+.streak-card-info span {
+  font-size: 12px;
+  color: #666;
+}
+
+/* Progress bar */
+
+.streak-progress {
+  width: 100%;
+  max-width: 250px;
+  height: 6px;
+
+  background: #e5e3ff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.streak-progress-fill {
+  height: 100%;
+  background: #5b4df5;
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+/* Delete button */
+
+.streak-delete-btn {
+  margin-left: 15px;
+  padding: 7px 12px;
+
+  border: 1px solid #5b4df5;
+  border-radius: 6px;
+
+  background: white;
+  color: #5b4df5;
+
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.streak-delete-btn:hover {
+  background: #5b4df5;
+  color: white;
+}

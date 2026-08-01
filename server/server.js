@@ -4,6 +4,7 @@ require("dotenv").config();
 
 const connectDB = require("./config/db");
 const todoRoutes = require("./routes/todoRoutes");
+const streakRoutes = require("./routes/streakRoutes");
 
 connectDB();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/todos", todoRoutes);
+app.use("/api/streaks", streakRoutes);
 
 // Test Route
 app.get("/", (req, res) => {
