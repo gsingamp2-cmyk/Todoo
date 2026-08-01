@@ -1,9 +1,11 @@
 const Streak = require("../models/Streak");
 
-// GET all streaks
+// GET logged-in user's streaks
 const getStreaks = async (req, res) => {
   try {
-    const streaks = await Streak.find().sort({ createdAt: -1 });
+    const streaks = await Streak.find({
+      user: req.user._id,
+    }).sort({ createdAt: -1 });
 
     res.status(200).json(streaks);
   } catch (error) {
@@ -13,12 +15,19 @@ const getStreaks = async (req, res) => {
   }
 };
 
-// CREATE streak
+// CREATE streak for logged-in user
 const addStreak = async (req, res) => {
   try {
     const { title, startDate, numberOfDays } = req.body;
 
+    if (!title || !startDate || !numberOfDays) {
+      return res.status(400).json({
+        message: "Title, start date and number of days are required",
+      });
+    }
+
     const streak = await Streak.create({
+      user: req.user._id,
       title,
       startDate,
       numberOfDays,
@@ -38,7 +47,10 @@ const toggleStreakDate = async (req, res) => {
     const { id } = req.params;
     const { date } = req.body;
 
-    const streak = await Streak.findById(id);
+    const streak = await Streak.findOne({
+      _id: id,
+      user: req.user._id,
+    });
 
     if (!streak) {
       return res.status(404).json({
@@ -50,13 +62,11 @@ const toggleStreakDate = async (req, res) => {
       streak.completedDates.includes(date);
 
     if (alreadyCompleted) {
-      // Uncheck the streak for this date
       streak.completedDates =
         streak.completedDates.filter(
           (completedDate) => completedDate !== date
         );
     } else {
-      // Complete the streak for this date
       streak.completedDates.push(date);
     }
 
@@ -70,18 +80,23 @@ const toggleStreakDate = async (req, res) => {
   }
 };
 
-// DELETE streak
+// DELETE logged-in user's streak
 const deleteStreak = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const streak = await Streak.findByIdAndDelete(id);
+    const streak = await Streak.findOne({
+      _id: id,
+      user: req.user._id,
+    });
 
     if (!streak) {
       return res.status(404).json({
         message: "Streak not found",
       });
     }
+
+    await streak.deleteOne();
 
     res.status(200).json({
       message: "Streak deleted successfully",

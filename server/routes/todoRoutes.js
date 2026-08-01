@@ -8,15 +8,12 @@ const {
   deleteTodo,
 } = require("../controllers/todoController");
 
-router.get("/", getTodos);
-router.put("/:id", updateTodo);
-router.post("/", addTodo);
-router.delete("/:id", deleteTodo);
+const { protect } = require("../middleware/authMiddleware");
 
-
-
-
-
-
+// All Todo routes require a valid JWT
+router.get("/", protect, getTodos);
+router.post("/", protect, addTodo);
+router.put("/:id", protect, updateTodo);
+router.delete("/:id", protect, deleteTodo);
 
 module.exports = router;

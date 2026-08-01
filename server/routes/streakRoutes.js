@@ -7,14 +7,17 @@ const {
   deleteStreak,
 } = require("../controllers/streakController");
 
+const { protect } = require("../middleware/authMiddleware");
+
 const router = express.Router();
 
-router.get("/", getStreaks);
+// All streak routes require JWT authentication
+router.get("/", protect, getStreaks);
 
-router.post("/", addStreak);
+router.post("/", protect, addStreak);
 
-router.put("/:id/toggle", toggleStreakDate);
+router.put("/:id/toggle", protect, toggleStreakDate);
 
-router.delete("/:id", deleteStreak);
+router.delete("/:id", protect, deleteStreak);
 
 module.exports = router;

@@ -1,3 +1,7 @@
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+
+
 import Calendar from "./components/Calendar";
 import { useEffect, useState } from "react";
 import "./App.css";
@@ -11,6 +15,16 @@ import TodoList from "./components/TodoList";
 import StreakPage from "./pages/StreakPage";
 
 function App() {
+
+  const [user, setUser] = useState(() => {
+  const savedUser = localStorage.getItem("user");
+
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+const [authPage, setAuthPage] = useState("login");
+
+
 
   const [page, setPage] = useState("todo");
   const [todos, setTodos] = useState([]);
@@ -180,11 +194,53 @@ const fetchStreaks = async () => {
   return selected >= start && selected <= end;
 });
 
-  // Load todos when app starts
-  useEffect(() => {
-  fetchTodos();
-  fetchStreaks();
-}, []);
+// Load todos when app starts
+// Load data whenever a user logs in
+useEffect(() => {
+  if (user) {
+    fetchTodos();
+    fetchStreaks();
+  }
+}, [user]);
+
+
+const handleLogin = (userData) => {
+  setUser(userData);
+};
+
+
+const handleLogout = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+
+  // Remove previous user's data from React state
+  setTodos([]);
+  setStreaks([]);
+
+  setUser(null);
+  setAuthPage("login");
+};
+  
+
+
+
+if (!user) {
+  if (authPage === "register") {
+    return (
+      <Register
+        onLogin={handleLogin}
+        goToLogin={() => setAuthPage("login")}
+      />
+    );
+  }
+
+  return (
+    <Login
+      onLogin={handleLogin}
+      goToRegister={() => setAuthPage("register")}
+    />
+  );
+}
 
     return (
       <div className="container">
@@ -203,6 +259,12 @@ const fetchStreaks = async () => {
           >
             🔥 Streaks
           </button>
+
+
+
+              <button onClick={handleLogout}>
+                Logout
+              </button>
         </div>
 
         {page === "streak" ? (

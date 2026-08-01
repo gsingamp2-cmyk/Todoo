@@ -630,3 +630,87 @@ h1 {
   background: #5b4df5;
   color: white;
 }
+
+
+/* =========================
+   AUTHENTICATION
+========================= */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-card {
+  width: 340px;
+  background: white;
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
+
+.auth-card h1 {
+  margin-bottom: 8px;
+}
+
+.auth-card h2 {
+  margin-bottom: 22px;
+  font-size: 18px;
+}
+
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-card input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  border: 1px solid #ddd;
+  border-radius: 7px;
+  outline: none;
+  font-size: 14px;
+}
+
+.auth-card input:focus {
+  border-color: #5b4df5;
+}
+
+.auth-card form button {
+  padding: 11px;
+  border: none;
+  border-radius: 7px;
+  background: #5b4df5;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-card form button:hover {
+  opacity: 0.9;
+}
+
+.auth-card p {
+  margin-top: 18px;
+  font-size: 13px;
+}
+
+.auth-link {
+  border: none;
+  background: none;
+  color: #5b4df5;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.auth-error {
+  color: #d93025;
+  font-size: 13px;
+  margin: 0;
+}

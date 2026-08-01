@@ -1,4 +1,5 @@
 const express = require("express");
+const authRoutes = require("./routes/authRoutes");
 const cors = require("cors");
 require("dotenv").config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/todos", todoRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/streaks", streakRoutes);
 
 // Test Route
