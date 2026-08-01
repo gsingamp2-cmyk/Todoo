@@ -215,3 +215,112 @@ h1 {
   background: #4f46e5;
   color: white;
 }
+
+
+
+/* ===== Calendar ===== */
+
+.calendar {
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8f8ff;
+  border-radius: 12px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.calendar-header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.calendar-header button {
+  border: none;
+  background: #5b4df5;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.calendar-weekdays,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  text-align: center;
+}
+
+.calendar-weekdays {
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+}
+
+.calendar-day {
+  border: none;
+  background: white;
+  border-radius: 6px;
+  padding: 7px 2px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.calendar-day:hover {
+  background: #ebe9ff;
+}
+
+.calendar-day.selected {
+  background: #5b4df5;
+  color: white;
+}
+
+.calendar-empty {
+  visibility: hidden;
+}
+
+.calendar-day.selected {
+  background: #5b4df5;
+  color: white;
+  font-weight: 600;
+}
+
+.calendar-day {
+  transition: 0.2s ease;
+}
+
+.calendar-day:hover {
+  background: #ebe9ff;
+}
+
+.calendar-day.selected:hover {
+  background: #4c3fe0;
+}
+
+
+/* Today's date */
+.calendar-day.today {
+  border: 1.5px solid #5b4df5;
+  font-weight: 700;
+}
+
+/* Selected date */
+.calendar-day.selected {
+  background: #5b4df5;
+  color: white;
+  border-color: #5b4df5;
+}
+
+/* If today itself is selected */
+.calendar-day.today.selected {
+  background: #5b4df5;
+  color: white;
+  border: 2px solid #4033d8;
+}

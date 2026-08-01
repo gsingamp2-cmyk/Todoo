@@ -14,10 +14,11 @@ const getTodos = async (req, res) => {
 // ADD todo
 const addTodo = async (req, res) => {
   try {
-    const { title } = req.body;
+    const { title, dueDate } = req.body;
 
     const todo = await Todo.create({
       title,
+      dueDate,
     });
 
     res.status(201).json(todo);

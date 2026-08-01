@@ -1,3 +1,4 @@
+import Calendar from "./components/Calendar";
 import { useEffect, useState } from "react";
 import "./App.css";
 
@@ -10,6 +11,17 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [filter, setFilter] = useState("all");
 
+  // Default selected date = today
+  const [selectedDate, setSelectedDate] = useState(() => {
+  const today = new Date();
+
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+});
+
   // Fetch all todos
   const fetchTodos = async () => {
     try {
@@ -21,133 +33,161 @@ function App() {
   };
 
   // Add todo
-  const addTodo = async (title) => {
+  const addTodo = async (title, dueDate) => {
     try {
       const response = await API.post("/", {
         title,
+        dueDate,
       });
 
-      setTodos([...todos, response.data]);
+      setTodos((prevTodos) => [...prevTodos, response.data]);
     } catch (error) {
       console.log(error);
     }
   };
 
+  // Delete todo
   const deleteTodo = async (id) => {
-  try {
-    await API.delete(`/${id}`);
+    try {
+      await API.delete(`/${id}`);
 
-    setTodos(todos.filter((todo) => todo._id !== id));
-  } catch (error) {
-    console.log(error);
-  }
-};
+      setTodos((prevTodos) =>
+        prevTodos.filter((todo) => todo._id !== id)
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-const editTodo = async (id, title) => {
-  try {
-    const response = await API.put(`/${id}`, {
-      title,
-    });
+  // Edit todo
+  const editTodo = async (id, title) => {
+    try {
+      const response = await API.put(`/${id}`, {
+        title,
+      });
 
-    setTodos(
-      todos.map((todo) =>
-        todo._id === id ? response.data : todo
-      )
-    );
-  } catch (error) {
-    console.log(error);
-  }
-};
+      setTodos((prevTodos) =>
+        prevTodos.map((todo) =>
+          todo._id === id ? response.data : todo
+        )
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-const toggleTodo = async (id) => {
-  try {
-    const todo = todos.find((todo) => todo._id === id);
+  // Complete / uncomplete todo
+  const toggleTodo = async (id) => {
+    try {
+      const todo = todos.find((todo) => todo._id === id);
 
-    const response = await API.put(`/${id}`, {
-      completed: !todo.completed,
-    });
+      if (!todo) return;
 
-    setTodos(
-      todos.map((todo) =>
-        todo._id === id ? response.data : todo
-      )
-    );
-  } catch (error) {
-    console.log(error);
-  }
-};
+      const response = await API.put(`/${id}`, {
+        completed: !todo.completed,
+      });
 
-const totalTasks = todos.length;
+      setTodos((prevTodos) =>
+        prevTodos.map((todo) =>
+          todo._id === id ? response.data : todo
+        )
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-const completedTasks = todos.filter(
-  (todo) => todo.completed
-).length;
+  // Todos belonging to selected calendar date
+  const dateTodos = todos.filter((todo) => {
+    if (!todo.dueDate) return false;
 
-const activeTasks = todos.filter(
-  (todo) => !todo.completed
-).length;
+    const todoDate = todo.dueDate.split("T")[0];
 
-const filteredTodos = todos.filter((todo) => {
-  if (filter === "active") {
-    return !todo.completed;
-  }
+    return todoDate === selectedDate;
+  });
 
-  if (filter === "completed") {
-    return todo.completed;
-  }
+  // Summary for selected date
+  const totalTasks = dateTodos.length;
 
-  return true;
-});
+  const completedTasks = dateTodos.filter(
+    (todo) => todo.completed
+  ).length;
 
+  const activeTasks = dateTodos.filter(
+    (todo) => !todo.completed
+  ).length;
 
+  // All / Active / Completed
+  const filteredTodos = dateTodos.filter((todo) => {
+    if (filter === "active") {
+      return !todo.completed;
+    }
 
+    if (filter === "completed") {
+      return todo.completed;
+    }
+
+    return true;
+  });
+
+  // Load todos when app starts
   useEffect(() => {
     fetchTodos();
   }, []);
 
   return (
-  <div className="container">
-    <h1>Todo App</h1>
+    <div className="container">
+      <h1>Todo App</h1>
 
-    <TodoForm addTodo={addTodo} />
+      <Calendar
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+      />
 
-    <div className="task-summary">
-      <span>Total: {totalTasks}</span>
-      <span>Active: {activeTasks}</span>
-      <span>Completed: {completedTasks}</span>
+      <TodoForm
+        addTodo={addTodo}
+        selectedDate={selectedDate}
+      />
+
+      <div className="task-summary">
+        <span>Total: {totalTasks}</span>
+        <span>Active: {activeTasks}</span>
+        <span>Completed: {completedTasks}</span>
+      </div>
+
+      <div className="filters">
+        <button
+          className={filter === "all" ? "active-filter" : ""}
+          onClick={() => setFilter("all")}
+        >
+          All
+        </button>
+
+        <button
+          className={filter === "active" ? "active-filter" : ""}
+          onClick={() => setFilter("active")}
+        >
+          Active
+        </button>
+
+        <button
+          className={
+            filter === "completed" ? "active-filter" : ""
+          }
+          onClick={() => setFilter("completed")}
+        >
+          Completed
+        </button>
+      </div>
+
+      <TodoList
+        todos={filteredTodos}
+        deleteTodo={deleteTodo}
+        editTodo={editTodo}
+        toggleTodo={toggleTodo}
+      />
     </div>
-
-    <div className="filters">
-      <button
-        className={filter === "all" ? "active-filter" : ""}
-        onClick={() => setFilter("all")}
-      >
-        All
-      </button>
-
-      <button
-        className={filter === "active" ? "active-filter" : ""}
-        onClick={() => setFilter("active")}
-      >
-        Active
-      </button>
-
-      <button
-        className={filter === "completed" ? "active-filter" : ""}
-        onClick={() => setFilter("completed")}
-      >
-        Completed
-      </button>
-    </div>
-
-    <TodoList
-      todos={filteredTodos}
-      deleteTodo={deleteTodo}
-      editTodo={editTodo}
-      toggleTodo={toggleTodo}
-    />
-  </div>
-);
+  );
 }
 
 export default App;
