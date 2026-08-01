@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5001/api/todos",
+  baseURL: "https://todoo-api.onrender.com/api/todos",
 });
 
 // Add JWT to every Todo request

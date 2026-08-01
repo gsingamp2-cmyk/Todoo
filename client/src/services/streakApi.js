@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const StreakAPI = axios.create({
-  baseURL: "http://localhost:5001/api/streaks",
+  baseURL: "https://todoo-api.onrender.com/api/streaks",
 });
 
 // Add JWT to every Streak request
